@@ -259,9 +259,17 @@ const questions = [
 const question = document.getElementById("question");
 const buttons = document.querySelectorAll(".answer");
 const result = document.getElementById("otgovor");
+
 let correct = 0;
 let wrong = 0;
+let currentIndex = 0;
 
+// 👉 listener-ите се добавят САМО ВЕДНЪЖ
+buttons.forEach((button) => {
+    button.addEventListener("click", function() {
+        checkAnswer(this.innerText);
+    });
+});
 
 function loadQuestion(index) {
     let current = questions[index];
@@ -270,16 +278,9 @@ function loadQuestion(index) {
     buttons[1].innerText = current.answers[1];
     buttons[2].innerText = current.answers[2];
     buttons[3].innerText = current.answers[3];
-    buttons.forEach((button) => {
-    button.addEventListener("click", function() {
-        checkAnswer(this.innerText);
-    });
-});
 }
 
 loadQuestion(0);
-
-let currentIndex = 0;
 
 function checkAnswer(answer) {   
     if (answer === questions[currentIndex].correct) {
@@ -289,20 +290,23 @@ function checkAnswer(answer) {
         result.innerText = "Грешно! ❌";
         wrong++;
     }
-    setTimeout(nextQuestion, 2500);
+
     result.style.visibility = "visible";
-setTimeout(() => {
-    result.style.visibility = "hidden";
-}, 2500);  // изчакай 1 секунда и мини напред
+
+    setTimeout(() => {
+        result.style.visibility = "hidden";
+        nextQuestion();
+    }, 1500);
 }
 
 function nextQuestion() {
     currentIndex++;
+
     if (currentIndex < questions.length) {
         loadQuestion(currentIndex);
         result.innerText = "";
     } else {
-        result.style.visibility = "visible"
+        result.style.visibility = "visible";
         result.innerText = `Верни: ${correct} | Грешни: ${wrong}`;
     }
 }
