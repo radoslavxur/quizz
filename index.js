@@ -288,6 +288,7 @@ function checkAnswer(answer) {
         correct++;
     } else {
         result.innerText = "Грешно! ❌";
+        result.innerText = `Грешно! ❌ Верният отговор е: ${questions[currentIndex].correct}`;
         wrong++;
     }
 
